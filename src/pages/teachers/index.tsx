@@ -255,10 +255,10 @@ export default function Teachers() {
 				columns={columns}
 				data={filteredData}
 				isLoading={isLoading}
-				onRowClick={(row) => navigate(`/teacher/${row.id}`)}
+				onRowClick={(row) => navigate(`/teachers/${row.id}`)}
 			/>
 
 			<TeacherSheet />
-		</div>
+		</div> 
 	);
 }

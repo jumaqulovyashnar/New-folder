@@ -1,6 +1,6 @@
 import { Button } from "@/ui/button";
 import { useNavigate, useParams } from "react-router";
-import { TEACHERS } from "../data";
+import { Teacher } from "../data";
 import { ChevronRight, GraduationCap } from "lucide-react";
 import { StatsGrid } from "./stats-grid";
 import { DEFAULT_DETAIL, TEACHER_DETAILS } from "./type";
@@ -10,24 +10,28 @@ import { ProfileForm } from "./detail-profile/profile-form";
 import { useState } from "react";
 import { TableToolbar } from "@/components/table-toolbar/table-toolbar";
 import { ActivityTabs } from "./activity-tabs";
-import { MOCK_RESEARCHES } from "./detail-tabs/researches-tab";
-import { MOCK_PUBLICATIONS } from "./detail-tabs/publications-tab";
-import { MOCK_NASHRLAR } from "./detail-tabs/nashrlar-tab";
-import { MOCK_MASLAHATLAR } from "./detail-tabs/maslahat-tab";
 import { ResearchModal } from "./detail-modals/research-modal";
 import { useModalActions } from "@/store/modalStore";
 import { PublicationModal } from "./detail-modals/publication-modal";
 import { NashrModal } from "./detail-modals/nashr-modal";
 import { MaslahatModal } from "./detail-modals/maslahat-modal";
 
-export default function TeacherDetail() {
+// Teacher typeni shu yerda import qilamiz (type fayldan)
+import type { Teacher as TeacherType } from "../data";
+
+interface TeacherDetailProps {
+	teacher?: TeacherType;
+}
+
+export default function TeacherDetail({ teacher: teacherProp }: TeacherDetailProps = {}) {
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const [activeTab, setActiveTab] = useState("researches");
 	const { open } = useModalActions();
 
-	const teacher = TEACHERS.find((t) => t.id === Number(id));
+	// Agar prop orqali kelmasa, TEACHER_DETAILS dan olamiz
 	const detail = TEACHER_DETAILS[Number(id)] ?? DEFAULT_DETAIL;
+	const teacher = teacherProp ?? (detail as unknown as TeacherType | undefined);
 
 	if (!teacher) {
 		return (
@@ -40,13 +44,14 @@ export default function TeacherDetail() {
 			</div>
 		);
 	}
+
 	const profile: ProfileFormData = {
-		fullName: teacher.name,
+		fullName: teacher.fullName,
 		email: teacher.email,
 		age: "",
-		phone: teacher.phone,
+		phone: teacher.phoneNumber,
 		department: teacher.department,
-		position: teacher.position,
+		position: teacher.lavozim,
 		bio: "",
 		additionalInfo: "",
 		specialty: "",
@@ -65,6 +70,7 @@ export default function TeacherDetail() {
 		activities: "Maslahatlar",
 		awards: "Mukofotlar",
 	};
+
 	const ADD_LABELS: Record<string, string> = {
 		researches: "Tadqiqot qo'shish",
 		publications: "Nazorat qo'shish",
@@ -72,13 +78,15 @@ export default function TeacherDetail() {
 		activities: "Maslahat qo'shish",
 		awards: "Mukofot qo'shish",
 	};
+
 	const TAB_COUNTS: Record<string, number> = {
-		researches: MOCK_RESEARCHES.length,
-		publications: MOCK_PUBLICATIONS.length,
-		supervision: MOCK_NASHRLAR.length,
-		activities: MOCK_MASLAHATLAR.length,
-		awards: 0,
+		researches: detail.counts?.researches ?? 0,
+		publications: detail.counts?.publications ?? 0,
+		supervision: detail.counts?.supervision ?? 0,
+		activities: detail.counts?.activities ?? 0,
+		awards: detail.counts?.awards ?? 0,
 	};
+
 	const MODAL_TYPES: Record<string, string> = {
 		researches: "research",
 		publications: "nazorat",
@@ -98,7 +106,9 @@ export default function TeacherDetail() {
 					O'qituvchilar
 				</button>
 				<ChevronRight className="size-3.5" />
-				<span className="text-foreground font-medium truncate max-w-[160px] sm:max-w-[300px]">{teacher.name}</span>
+				<span className="text-foreground font-medium truncate max-w-[160px] sm:max-w-[300px]">
+					{teacher.fullName}
+				</span>
 			</div>
 
 			{/* Top: Sidebar + ProfileForm — mobile: column, desktop: row */}

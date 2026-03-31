@@ -20,6 +20,14 @@ export type TeacherDetail = {
 		supervised: number;
 		international: number;
 	};
+	// type.ts ga qo'shing
+counts?: {
+  researches: number;
+  publications: number;
+  supervision: number;
+  activities: number;
+  awards: number;
+};
 	timeline: { date: string; text: string; type: TimelineType }[];
 };
 
