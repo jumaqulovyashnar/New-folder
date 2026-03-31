@@ -17,52 +17,6 @@ export type Maslahat = {
 	status: "JARAYONDA" | "TUGALLANGAN";
 	pdfName: string | null;
 };
-export const MOCK_MASLAHATLAR: Maslahat[] = [
-	{
-		id: 1,
-		name: "Kiberxavfsizlik strategiyalari",
-		description: "Kompaniyalarda kiberxavfsizlikni kuchaytirish bo'yicha ekspert maslahati.",
-		year: "2025",
-		head: "Dr. Alisher Karimov",
-		subscribe: "HA",
-		level: "XALQARO",
-		status: "TUGALLANGAN",
-		pdfName: "cyber_sec_strategy.pdf",
-	},
-	{
-		id: 2,
-		name: "Yashil energetika loyihasi",
-		description: "Quyosh panellarini o'rnatish va samaradorligini oshirish bo'yicha texnik ko'rsatmalar.",
-		year: "2026",
-		head: "Aziza Sodiqova",
-		subscribe: "YO'Q",
-		level: "MAHALLIY",
-		status: "JARAYONDA",
-		pdfName: null,
-	},
-	{
-		id: 3,
-		name: "AI integratsiyasi",
-		description: "Biznes jarayonlarini sun'iy intellekt yordamida avtomatlashtirish.",
-		year: "2024",
-		head: "Rustam Egamberdiyev",
-		subscribe: "HA",
-		level: "XALQARO",
-		status: "TUGALLANGAN",
-		pdfName: "ai_implementation.pdf",
-	},
-	{
-		id: 4,
-		name: "Mintaqaviy iqtisodiy tahlil",
-		description: "Mahalliy bozorlardagi iqtisodiy o'sish dinamikasini o'rganish bo'yicha maslahat.",
-		year: "2026",
-		head: "Farhod Rahimov",
-		subscribe: "YO'Q",
-		level: "MAHALLIY",
-		status: "JARAYONDA",
-		pdfName: null,
-	},
-];
 
 const STYLE_MAP: Record<string, string> = {
 	HA: "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-50",
@@ -73,7 +27,7 @@ const STYLE_MAP: Record<string, string> = {
 	TUGALLANGAN: "bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-50",
 };
 
-export function MaslahatTab() {
+export function MaslahatTab({ data }: { data: Maslahat[] }) {
 	const { open } = useModalActions();
 
 	const columns: ColumnDef<Maslahat>[] = [
@@ -162,5 +116,5 @@ export function MaslahatTab() {
 		},
 	];
 
-	return <DataTable columns={columns} data={MOCK_MASLAHATLAR} />;
+	return <DataTable columns={columns} data={data} />;
 }

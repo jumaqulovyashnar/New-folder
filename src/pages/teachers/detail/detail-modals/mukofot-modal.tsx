@@ -9,36 +9,33 @@ import { Textarea } from "@/ui/textarea";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-type MaslahatFormData = {
+type MukofotFormData = {
 	id?: number;
 	name: string;
-	description: string;
+	organization: string;
 	year: string;
-	head: string;
-	subscribe: "HA" | "YO'Q";
-	level: "XALQARO" | "MAHALLIY";
-	status: "JARAYONDA" | "TUGALLANGAN";
+	level: "XALQARO" | "RESPUBLIKA" | "MAHALLIY";
+	category: "ILMIY" | "PEDAGOGIK" | "IJTIMOIY";
+	description: string;
 	pdf: File | null;
 };
 
-export function MaslahatModal() {
+export function MukofotModal() {
 	const isOpen = useModalIsOpen();
 	const editData = useModalEditData();
 	const { close } = useModalActions();
 
-	// Type-ni tekshirishda ehtiyot bo'ling
-	const visible = isOpen && editData?._type === "maslahat";
+	const visible = isOpen && editData?._type === "mukofot";
 	const isEdit = visible && !!editData?.id;
 
-	const { register, handleSubmit, control, reset } = useForm<MaslahatFormData>({
+	const { register, handleSubmit, control, reset } = useForm<MukofotFormData>({
 		defaultValues: {
 			name: "",
-			description: "",
+			organization: "",
 			year: "",
-			head: "",
-			level: "MAHALLIY",
-			status: "JARAYONDA",
-			subscribe: "HA",
+			level: "RESPUBLIKA",
+			category: "ILMIY",
+			description: "",
 			pdf: null,
 		},
 	});
@@ -47,23 +44,21 @@ export function MaslahatModal() {
 		if (visible && isEdit) {
 			reset({
 				name: editData.name || "",
-				description: editData.description || "",
+				organization: editData.organization || "",
 				year: editData.year || "",
-				head: editData.head || "",
-				level: editData.level || "MAHALLIY",
-				status: editData.status || "JARAYONDA",
-				subscribe: editData.subscribe || "HA",
+				level: editData.level || "RESPUBLIKA",
+				category: editData.category || "ILMIY",
+				description: editData.description || "",
 				pdf: null,
 			});
 		} else if (visible && !isEdit) {
 			reset({
 				name: "",
-				description: "",
+				organization: "",
 				year: "",
-				head: "",
-				level: "MAHALLIY",
-				status: "JARAYONDA",
-				subscribe: "HA",
+				level: "RESPUBLIKA",
+				category: "ILMIY",
+				description: "",
 				pdf: null,
 			});
 		}
@@ -74,43 +69,34 @@ export function MaslahatModal() {
 		close();
 	};
 
-	const onSubmit = (data: MaslahatFormData) => {
+	const onSubmit = (data: MukofotFormData) => {
 		console.log("Form Data:", data);
 		handleClose();
 	};
 
 	return (
-		<Modal open={visible} onClose={handleClose} title={isEdit ? "Maslahatni tahrirlash" : "Maslahat qo'shish"}>
+		<Modal open={visible} onClose={handleClose} title={isEdit ? "Mukofotni tahrirlash" : "Mukofot qo'shish"}>
 			<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
 				<div className="flex flex-col gap-2">
-					<Label htmlFor="m-name">Maslahat nomi</Label>
-					<Input id="m-name" placeholder="Nomni kiriting..." {...register("name")} />
+					<Label htmlFor="mk-name">Mukofot nomi</Label>
+					<Input id="mk-name" placeholder="Nomni kiriting..." {...register("name")} />
 				</div>
 
 				<div className="flex flex-col gap-2">
-					<Label htmlFor="m-desc">Qisqa tavsif</Label>
-					<Textarea
-						id="m-desc"
-						placeholder="Tavsif..."
-						className="min-h-[80px] resize-none"
-						{...register("description")}
-					/>
+					<Label htmlFor="mk-org">Beruvchi tashkilot</Label>
+					<Input id="mk-org" placeholder="Tashkilot nomi..." {...register("organization")} />
 				</div>
 
 				<div className="grid grid-cols-2 gap-4">
 					<div className="flex flex-col gap-2">
-						<Label htmlFor="m-year">Yil</Label>
-						<Input id="m-year" type="number" placeholder="2024" {...register("year")} />
-					</div>
-					<div className="flex flex-col gap-2">
-						<Label htmlFor="m-head">Rahbar</Label>
-						<Input id="m-head" placeholder="Rahbar ismi..." {...register("head")} />
+						<Label htmlFor="mk-year">Yil</Label>
+						<Input id="mk-year" type="number" placeholder="2024" {...register("year")} />
 					</div>
 
 					<div className="flex flex-col gap-2">
-						<Label>A'zolik</Label>
+						<Label>Daraja</Label>
 						<Controller
-							name="subscribe"
+							name="level"
 							control={control}
 							render={({ field }) => (
 								<Select value={field.value} onValueChange={field.onChange}>
@@ -118,27 +104,29 @@ export function MaslahatModal() {
 										<SelectValue placeholder="Tanlang" />
 									</SelectTrigger>
 									<SelectContent>
-										<SelectItem value="HA">Ha</SelectItem>
-										<SelectItem value="YO'Q">Yo'q</SelectItem>
+										<SelectItem value="XALQARO">Xalqaro</SelectItem>
+										<SelectItem value="RESPUBLIKA">Respublika</SelectItem>
+										<SelectItem value="MAHALLIY">Mahalliy</SelectItem>
 									</SelectContent>
 								</Select>
 							)}
 						/>
 					</div>
 
-					<div className="flex flex-col gap-2">
-						<Label>Holat</Label>
+					<div className="flex flex-col gap-2 col-span-2">
+						<Label>Kategoriya</Label>
 						<Controller
-							name="status"
-							control={control}    
+							name="category"
+							control={control}
 							render={({ field }) => (
 								<Select value={field.value} onValueChange={field.onChange}>
 									<SelectTrigger className="w-full">
 										<SelectValue placeholder="Tanlang" />
 									</SelectTrigger>
 									<SelectContent>
-										<SelectItem value="JARAYONDA">Jarayonda</SelectItem>
-										<SelectItem value="TUGALLANGAN">Tugallangan</SelectItem>
+										<SelectItem value="ILMIY">Ilmiy</SelectItem>
+										<SelectItem value="PEDAGOGIK">Pedagogik</SelectItem>
+										<SelectItem value="IJTIMOIY">Ijtimoiy</SelectItem>
 									</SelectContent>
 								</Select>
 							)}
@@ -147,26 +135,17 @@ export function MaslahatModal() {
 				</div>
 
 				<div className="flex flex-col gap-2">
-					<Label>Daraja</Label>
-					<Controller
-						name="level"
-						control={control}
-						render={({ field }) => (
-							<Select value={field.value} onValueChange={field.onChange}>
-								<SelectTrigger className="w-full">
-									<SelectValue placeholder="Tanlang" />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectItem value="XALQARO">Xalqaro</SelectItem>
-									<SelectItem value="MAHALLIY">Mahalliy</SelectItem>
-								</SelectContent>
-							</Select>
-						)}
+					<Label htmlFor="mk-desc">Tavsif</Label>
+					<Textarea
+						id="mk-desc"
+						placeholder="Mukofot haqida qisqacha..."
+						className="min-h-[80px] resize-none"
+						{...register("description")}
 					/>
 				</div>
 
 				<div className="flex flex-col gap-2">
-					<Label>PDF yuklash</Label>
+					<Label>Sertifikat (PDF)</Label>
 					<Controller
 						name="pdf"
 						control={control}

@@ -10,26 +10,30 @@ const API_ENDPOINTS = {
 	COLLAGE: {
 		GETALL: "/college",
 		CREATE: "college",
-		DELETE:"/college",
-		UPDATE:'/college'
+		DELETE: "/college",
+		UPDATE: "/college",
 	},
-	DEPARTMENT:{
+	DEPARTMENT: {
 		CREATE: "/department",
-		DELETE:"/department",
-		UPDATE:'/department',
-		PAGE:"/department/page",
-		LIST:"/department/list"
+		DELETE: "/department",
+		UPDATE: "/department",
+		PAGE: "/department/page",
+		LIST: "/department/list",
 	},
-	POSITION:{
-		LAVOZIM:"/lavozim",
-		STATISTIC:"/lavozim/get-lavozim-statistiks"
+	POSITION: {
+		LAVOZIM: "/lavozim",
+		STATISTIC: "/lavozim/get-lavozim-statistiks",
 	},
-	TEACHER:{
-		SEARCH:"/teacher/search",
-		DELETE:"/teacher",
-		CREATE:"/teacher/saveUser",
-		EDIT:"/teacher/edit",
-	}
+	TEACHER: {
+		SEARCH: "/teacher/search",
+		DELETE: "/teacher",
+		CREATE: "/teacher/saveUser",
+		EDIT: "/teacher/edit",
+	},
+	USER_STATISTICS: "/user/statistics",
+	RESEARCH: {
+		GETBYID: "/research/byUser",
+	},
 };
 
-export const { LOGIN, USER, FILE, COLLAGE,DEPARTMENT,POSITION ,TEACHER} = API_ENDPOINTS;
+export const { LOGIN, USER, FILE, COLLAGE, DEPARTMENT, POSITION, TEACHER, USER_STATISTICS, RESEARCH } = API_ENDPOINTS;
