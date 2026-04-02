@@ -1,7 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { TeacherService } from "@/features/teacher/teacher.service";
-import { DeleteTeacherResponse } from "@/features/teacher/teacher.type";
-
 export const useDeleteTeacher = () => {
   const queryClient = useQueryClient();
 
