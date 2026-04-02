@@ -36,6 +36,11 @@ export const navData: NavProps["data"] = [
 				icon: <Icon icon="lucide:graduation-cap" size="24" />,
 			},
 			{
+				title: "Tadqiqotlar",
+				path: "/research",
+				icon: <Icon icon="lucide:microscope" size="24" />,
+			},
+			{
 				title: "Lavozimlar",
 				path: "/positions",
 				icon: <Icon icon="lucide:briefcase" size="24" />,

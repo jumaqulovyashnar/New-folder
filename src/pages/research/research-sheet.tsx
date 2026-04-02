@@ -18,7 +18,7 @@ interface ResearchFormValues {
 	name: string;
 	description: string;
 	year: number;
-	file: File | null;
+	fileUrl: string;
 	userId: number;
 	member: boolean;
 	univerName: string;
@@ -46,7 +46,7 @@ export function ResearchSheet() {
 			name: "",
 			description: "",
 			year: new Date().getFullYear(),
-			file: null,
+			fileUrl: "",
 			userId: 1, // TODO: get from auth
 			member: false,
 			univerName: "",
@@ -61,7 +61,7 @@ export function ResearchSheet() {
 				name: editData.name,
 				description: editData.description,
 				year: editData.year,
-				file: null, // TODO: handle existing file
+				fileUrl: editData.fileUrl,
 				userId: editData.userId,
 				member: editData.member,
 				univerName: editData.univerName,
@@ -83,7 +83,7 @@ export function ResearchSheet() {
 				name: values.name,
 				description: values.description,
 				year: values.year,
-				fileUrl: values.file?.name || editData.fileUrl, // TODO: handle file upload
+				fileUrl: values.fileUrl,
 				userId: values.userId,
 				member: values.member,
 				univerName: values.univerName,
@@ -100,7 +100,7 @@ export function ResearchSheet() {
 			name: values.name,
 			description: values.description,
 			year: values.year,
-			fileUrl: values.file?.name || "", // TODO: handle file upload
+			fileUrl: values.fileUrl,
 			userId: values.userId,
 			member: values.member,
 			univerName: values.univerName,
@@ -122,13 +122,13 @@ export function ResearchSheet() {
 					<form id="research-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5 px-6 py-5">
 						{/* Fayl */}
 						<div className="flex flex-col gap-2">
-							<Label>
-								Fayl <span className="text-muted-foreground font-normal">(ixtiyoriy)</span>
+							<Label htmlFor="fileUrl">
+								Fayl URL <span className="text-muted-foreground font-normal">(ixtiyoriy)</span>
 							</Label>
-							<Controller
-								name="file"
-								control={control}
-								render={({ field }) => <FileInput type="document" value={field.value} onChange={field.onChange} />}
+							<Input
+								id="fileUrl"
+								placeholder="Fayl URL"
+								{...register("fileUrl")}
 							/>
 						</div>
 

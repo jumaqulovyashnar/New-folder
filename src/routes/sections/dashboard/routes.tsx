@@ -13,6 +13,7 @@ export function getDashboardRoutes(): RouteObject[] {
 				{ path: "faculties", element: Component("/pages/faculties") },
 				{ path: "departments", element: Component("/pages/departments") },
 				{ path: "teachers", element: Component("/pages/teachers") },
+				{ path: "research", element: Component("/pages/research") },
 				{ path: "positions", element: Component("/pages/positions") },
 				{ path: "teachers/:id", element: Component("/pages/teachers/detail") },
 			],
