@@ -31,9 +31,14 @@ const API_ENDPOINTS = {
 		EDIT: "/teacher/edit",
 	},
 	USER_STATISTICS: "/user/statistics",
-	RESEARCH: {
-		GETBYID: "/research/byUser",
-	},
+ RESEARCH : {
+  GETBYID: "/research/byUser",       
+  GETBYID_SINGLE: "/research",       
+  LIST: "/research",               
+  CREATE: "/research",             
+  UPDATE: "/research",               
+  DELETE: "/research",                
+},
 };
 
 export const { LOGIN, USER, FILE, COLLAGE, DEPARTMENT, POSITION, TEACHER, USER_STATISTICS, RESEARCH } = API_ENDPOINTS;
