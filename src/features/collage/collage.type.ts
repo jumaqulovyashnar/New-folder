@@ -1,5 +1,3 @@
-import { NonUndefined } from "react-hook-form";
-
 export interface CreateCollageDTO {
 	name: string;
 	imgUrl: string;
