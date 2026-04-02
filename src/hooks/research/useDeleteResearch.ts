@@ -7,7 +7,12 @@ export const useDeleteResearch = () => {
   return useMutation({
     mutationFn: (id: number) => ResearchService.delete(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["researchList"], exact: false });
+      queryClient.invalidateQueries({
+        predicate: (query) => query.queryKey[0] === "researchList"
+      });
+      queryClient.refetchQueries({
+        predicate: (query) => query.queryKey[0] === "researchList"
+      });
     }
   });
 };

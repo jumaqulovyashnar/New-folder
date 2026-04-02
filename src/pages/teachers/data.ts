@@ -5,10 +5,18 @@ export type Teacher = {
 	imgUrl: string | null;
 	lavozim: string;
 	department: string;
-	departmentId: number |string;
+	departmentId: number | string;
 	lavozmId: number | string;
 	email: string;
 	gender: boolean;
+	age: number;
+	profession: string | null;
+	biography?: string;
+	orcId?: string;
+	scopusId?: string;
+	scienceId?: string;
+	researcherId?: string;
+	fileUrl?: string;
 };
 
 export type TeacherFormValues = {
@@ -21,6 +29,13 @@ export type TeacherFormValues = {
 	imgUrl: File | null;
 	password: string;
 	confirmPassword: string;
+	age?: number;
+	profession?: string;
+	biography?: string;
+	orcId?: string;
+	scopusId?: string;
+	scienceId?: string;
+	researcherId?: string;
 };
 
 export type TeacherCreateValues = {
@@ -32,4 +47,14 @@ export type TeacherCreateValues = {
 	password: string;
 	departmentId: number;
 	email: string;
+	age?: number;
+	profession?: string;
+	biography?: string;
+	orcId?: string;
+	scopusId?: string;
+	scienceId?: string;
+	researcherId?: string;
+	fileUrl?: string;
 };
+
+

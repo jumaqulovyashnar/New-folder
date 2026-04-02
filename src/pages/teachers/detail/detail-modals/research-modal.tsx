@@ -134,7 +134,7 @@ export function ResearchModal() {
 						placeholder="Tadqiqot haqida qisqacha..."
 						className="min-h-[80px] resize-none"
 						{...register("description")}
-					/>
+					/>	
 				</div>
 				<div className="grid grid-cols-2 gap-4">
 					<div className="flex flex-col gap-2">

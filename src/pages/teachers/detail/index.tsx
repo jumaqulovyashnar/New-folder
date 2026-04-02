@@ -1,6 +1,6 @@
 import { Button } from "@/ui/button";
 import { useNavigate, useParams } from "react-router";
-// import { Teacher } from "../data";
+import { Teacher } from "../data";
 import { ChevronRight, GraduationCap } from "lucide-react";
 import { StatsGrid } from "./stats-grid";
 import { DEFAULT_DETAIL, TEACHER_DETAILS } from "./type";

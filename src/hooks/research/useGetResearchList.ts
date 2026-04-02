@@ -5,6 +5,9 @@ import { ResearchRequestParams } from "@/features/research/research.type";
 export const useGetResearchList = (params: ResearchRequestParams) => {
   return useQuery({
     queryKey: ["researchList", params],
-    queryFn: () => ResearchService.getList(params)
+    queryFn: () => ResearchService.getList(params),
+    staleTime: 0,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
   });
 };
