@@ -296,11 +296,11 @@ export function ResearchSheet() {
 
 						{/* Submit buttons */}
 						<div className="flex gap-3 pt-4">
-							<Button type="button" variant="outline" onClick={handleClose} className="flex-1">
+							<Button type="button" variant="outline" onClick={handleClose} className="flex-1" disabled={isSubmitting || isCreating || isUpdating}>
 								Bekor qilish
 							</Button>
-							<Button type="submit" className="flex-1">
-								{isEdit ? "Saqlash" : "Qo'shish"}
+							<Button type="submit" className="flex-1" disabled={isSubmitting || isCreating || isUpdating}>
+								{isSubmitting || isCreating || isUpdating ? "Yuklanmoqda..." : isEdit ? "Saqlash" : "Qo'shish"}
 							</Button>
 						</div>
 					</form>
