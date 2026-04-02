@@ -74,7 +74,7 @@ export interface CreateTeacherParams {
   fullName: string;
   phoneNumber: string;
   email: string;
-  imgUrl: File | null;
+  imgUrl: string | null;
   lavozmId: number;
   gender: boolean;
   password: string;
@@ -102,7 +102,7 @@ export interface EditTeacherParams {
   fullName: string;
   phoneNumber: string;
   email: string;
-  imgUrl: File | null;
+  imgUrl: string | null;
   lavozmId: number;
   gender: boolean;
   departmentId: number;

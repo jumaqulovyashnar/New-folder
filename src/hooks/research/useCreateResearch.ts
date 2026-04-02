@@ -7,6 +7,8 @@ export const useCreateResearch = () => {
 
   return useMutation({
     mutationFn: (data: CreateResearchRequest) => ResearchService.create(data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["researchList"] })
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["researchList"], exact: false });
+    }
   });
 };

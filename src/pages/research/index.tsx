@@ -13,6 +13,7 @@ import { Label } from "@/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/select";
 import type { ResearchItem } from "@/features/research/research.type";
 import { ResearchSheet } from "./research-sheet";
+import { ResearchSheet } from "./research-sheet";
 
 function createColumns(
 	onEdit: (row: ResearchItem) => void,
@@ -102,7 +103,7 @@ function createColumns(
 }
 
 export default function Research() {
-	const { open } = useResearchSheetActions();
+	const { open: openSheet } = useResearchSheetActions();
 	const navigate = useNavigate();
 	const { mutate: deleteResearch } = useDeleteResearch();
 
@@ -113,7 +114,7 @@ export default function Research() {
 	// For now, use fixed params, later can add pagination
 	const { data: response, isLoading } = useGetResearchList({ page: 1, size: 100 });
 
-	const researches: ResearchItem[] = response?.body ?? [];
+	const researches: ResearchItem[] = response?.data?.body ?? [];
 
 	const filteredData = useMemo(() => {
 		if (!researches.length) return [];
@@ -144,10 +145,10 @@ export default function Research() {
 	const columns = useMemo(
 		() =>
 			createColumns(
-				(row) => open(row),
+				(row) => openSheet(row),
 				(row) => deleteResearch(row.id)
 			),
-		[open, deleteResearch]
+		[openSheet, deleteResearch]
 	);
 
 	return (
@@ -171,7 +172,7 @@ export default function Research() {
 				<Button
 					size="sm"
 					className="h-8 gap-1 text-[12px] bg-green-600 hover:bg-green-700 text-white"
-					onClick={() => open()}
+					onClick={() => openSheet()}
 				>
 					<UserPlus className="size-3.5" />
 					Tadqiqot qo'shish
@@ -179,7 +180,7 @@ export default function Research() {
 			</div>
 
 			<div className="flex flex-wrap items-end gap-3 p-4 bg-muted/30 rounded-lg border">
-				<div className="flex-1 min-w-[200px]">
+				<div className="flex-1 min-w-50">
 					<Label htmlFor="search-name" className="text-[11px] font-medium text-muted-foreground mb-1 block">
 						Nomi bo'yicha qidirish
 					</Label>
@@ -195,7 +196,7 @@ export default function Research() {
 					</div>
 				</div>
 
-				<div className="w-[200px]">
+				<div className="w-50">
 					<Label htmlFor="type-filter" className="text-[11px] font-medium text-muted-foreground mb-1 block">
 						Turi bo'yicha
 					</Label>
@@ -211,7 +212,7 @@ export default function Research() {
 					</Select>
 				</div>
 
-				<div className="w-[200px]">
+				<div className="w-50">
 					<Label htmlFor="status-filter" className="text-[11px] font-medium text-muted-foreground mb-1 block">
 						Holati bo'yicha
 					</Label>

@@ -257,7 +257,6 @@ export default function Teachers() {
 				isLoading={isLoading}
 				onRowClick={(row) => navigate(`/teachers/${row.id}`)}
 			/>
-
 			<TeacherSheet />
 		</div> 
 	);

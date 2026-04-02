@@ -1,4 +1,3 @@
-import { FileInput } from "@/components/file-input/file-input";
 import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
 import { Label } from "@/ui/label";
@@ -7,12 +6,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/ui/separator";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/ui/sheet";
 import { Textarea } from "@/ui/textarea";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import type { CreateResearchRequest, UpdateResearchRequest } from "@/features/research/research.type";
 import { useResearchSheetActions, useResearchSheetEditData, useResearchSheetIsOpen } from "@/store/researchSheet";
 import { useCreateResearch } from "@/hooks/research/useCreateResearch";
 import { useUpdateResearch } from "@/hooks/research/useUpdateResearch";
+import { toast } from "sonner";
 
 interface ResearchFormValues {
 	name: string;
@@ -31,9 +31,10 @@ export function ResearchSheet() {
 	const editData = useResearchSheetEditData();
 	const { close } = useResearchSheetActions();
 	const isEdit = editData !== null;
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
-	const { mutate: createResearch } = useCreateResearch();
-	const { mutate: updateResearch } = useUpdateResearch();
+	const { mutate: createResearch, isPending: isCreating } = useCreateResearch();
+	const { mutate: updateResearch, isPending: isUpdating } = useUpdateResearch();
 
 	const {
 		register,
@@ -58,15 +59,27 @@ export function ResearchSheet() {
 	useEffect(() => {
 		if (editData) {
 			reset({
-				name: editData.name,
-				description: editData.description,
-				year: editData.year,
-				fileUrl: editData.fileUrl,
-				userId: editData.userId,
-				member: editData.member,
-				univerName: editData.univerName,
-				finished: editData.finished,
-				memberEnum: editData.memberEnum,
+				name: editData.name || "",
+				description: editData.description || "",
+				year: editData.year || new Date().getFullYear(),
+				fileUrl: editData.fileUrl || "",
+				userId: editData.userId || 1,
+				member: editData.member || false,
+				univerName: editData.univerName || "",
+				finished: editData.finished || false,
+				memberEnum: editData.memberEnum || "MILLIY",
+			});
+		} else {
+			reset({
+				name: "",
+				description: "",
+				year: new Date().getFullYear(),
+				fileUrl: "",
+				userId: 1,
+				member: false,
+				univerName: "",
+				finished: false,
+				memberEnum: "MILLIY",
 			});
 		}
 	}, [editData, reset]);
@@ -76,39 +89,69 @@ export function ResearchSheet() {
 		close();
 	};
 
-	const onSubmit = (values: ResearchFormValues) => {
-		if (isEdit && editData) {
-			const updatePayload: UpdateResearchRequest = {
-				id: editData.id,
+	const onSubmit = async (values: ResearchFormValues) => {
+		try {
+			setIsSubmitting(true);
+
+			if (isEdit && editData) {
+				const updatePayload: UpdateResearchRequest = {
+					id: editData.id,
+					name: values.name,
+					description: values.description,
+					year: Number(values.year),
+					fileUrl: values.fileUrl,
+					userId: Number(values.userId),
+					member: values.member === true || values.member === "true",
+					univerName: values.univerName,
+					finished: values.finished === true || values.finished === "true",
+					memberEnum: values.memberEnum,
+				};
+
+				updateResearch(updatePayload, {
+					onSuccess: () => {
+						toast.success("Tadqiqot muvaffaqiyatli yangilandi");
+						handleClose();
+						setIsSubmitting(false);
+					},
+					onError: (error: any) => {
+						toast.error(error?.message || "Tadqiqotni yangilashda xato");
+						setIsSubmitting(false);
+						console.error("Update error:", error);
+					}
+				});
+				return;
+			}
+
+			// Create
+			const createPayload: CreateResearchRequest = {
 				name: values.name,
 				description: values.description,
-				year: values.year,
+				year: Number(values.year),
 				fileUrl: values.fileUrl,
-				userId: values.userId,
-				member: values.member,
+				userId: Number(values.userId),
+				member: values.member === true || values.member === "true",
 				univerName: values.univerName,
-				finished: values.finished,
+				finished: values.finished === true || values.finished === "true",
 				memberEnum: values.memberEnum,
 			};
 
-			updateResearch(updatePayload, { onSuccess: handleClose });
-			return;
+			createResearch(createPayload, {
+				onSuccess: () => {
+					toast.success("Tadqiqot muvaffaqiyatli qo'shildi");
+					handleClose();
+					setIsSubmitting(false);
+				},
+				onError: (error: any) => {
+					toast.error(error?.message || "Tadqiqot qo'shishda xato");
+					setIsSubmitting(false);
+					console.error("Create error:", error);
+				}
+			});
+		} catch (error) {
+			toast.error("Xatolik yuz berdi");
+			setIsSubmitting(false);
+			console.error("Form submission error:", error);
 		}
-
-		// Create
-		const createPayload: CreateResearchRequest = {
-			name: values.name,
-			description: values.description,
-			year: values.year,
-			fileUrl: values.fileUrl,
-			userId: values.userId,
-			member: values.member,
-			univerName: values.univerName,
-			finished: values.finished,
-			memberEnum: values.memberEnum,
-		};
-
-		createResearch(createPayload, { onSuccess: handleClose });
 	};
 
 	return (

@@ -4,7 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useUserInfo } from "@/store/userStore";
 
 export function useUser() {
-	const role = useUserInfo().roles[0].code;
+	const userInfo = useUserInfo();
+	const role = userInfo?.roles?.[0]?.code || "user";
 
 	return useQuery({
 		queryKey: ["user", role],
