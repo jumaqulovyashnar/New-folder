@@ -11,7 +11,7 @@ import { useState } from "react";
 import { TableToolbar } from "@/components/table-toolbar/table-toolbar";
 import { ActivityTabs } from "./activity-tabs";
 import { ResearchModal } from "./detail-modals/research-modal";
-import { useModalActions } from "@/store/modalStore";
+import { useGetResearchByUserId } from "@/hooks/research/useGetResearchById";
 import { PublicationModal } from "./detail-modals/publication-modal";
 import { NashrModal } from "./detail-modals/nashr-modal";
 import { MaslahatModal } from "./detail-modals/maslahat-modal";
@@ -28,6 +28,19 @@ export default function TeacherDetail({ teacher: teacherProp }: TeacherDetailPro
 	const navigate = useNavigate();
 	const [activeTab, setActiveTab] = useState("researches");
 	const { open } = useModalActions();
+
+	// Fetch research data for this teacher
+	const { data: researchResponse } = useGetResearchByUserId(1); // TODO: get actual user ID from teacher data
+	const researchData = (researchResponse?.data?.body ?? []).map((item: any) => ({
+		id: item.id,
+		name: item.name,
+		description: item.description,
+		year: String(item.year),
+		organization: item.univerName,
+		membershipType: item.memberEnum,
+		status: item.finished ? "TUGALLANGAN" : "JARAYONDA",
+		pdfName: item.fileUrl,
+	}));
 
 	// Agar prop orqali kelmasa, TEACHER_DETAILS dan olamiz
 	const detail = TEACHER_DETAILS[Number(id)] ?? DEFAULT_DETAIL;
@@ -128,7 +141,7 @@ export default function TeacherDetail({ teacher: teacherProp }: TeacherDetailPro
 				addLabel={ADD_LABELS[activeTab]}
 				onAdd={MODAL_TYPES[activeTab] ? () => open({ _type: MODAL_TYPES[activeTab] }) : undefined}
 			/>
-			<ActivityTabs activeTab={activeTab} onTabChange={setActiveTab} />
+			<ActivityTabs activeTab={activeTab} onTabChange={setActiveTab} researchData={researchData} />
 
 			<StatsGrid stats={detail.stats} subStats={detail.subStats} />
         

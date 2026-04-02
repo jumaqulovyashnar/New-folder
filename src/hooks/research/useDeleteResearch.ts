@@ -6,8 +6,15 @@ export const useDeleteResearch = () => {
 
   return useMutation({
     mutationFn: (id: number) => ResearchService.delete(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["researchList"], exact: false });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        predicate: (query) => query.queryKey[0] === "researchList" || query.queryKey[0] === "researchByUser"
+      });
+      setTimeout(() => {
+        queryClient.refetchQueries({
+          predicate: (query) => query.queryKey[0] === "researchList" || query.queryKey[0] === "researchByUser"
+        });
+      }, 500);
     }
   });
 };

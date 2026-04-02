@@ -91,9 +91,10 @@ const TABS = [
 type ActivityTabsProps = {
   activeTab: string;
   onTabChange: (tab: string) => void;
+  researchData?: any[];
 };
 
-export function ActivityTabs({ activeTab, onTabChange }: ActivityTabsProps) {
+export function ActivityTabs({ activeTab, onTabChange, researchData = [] }: ActivityTabsProps) {
   return (
     <Tabs
       value={activeTab}
@@ -123,7 +124,7 @@ export function ActivityTabs({ activeTab, onTabChange }: ActivityTabsProps) {
       <div className="px-3 sm:px-5">
         <TabsContent value="researches">
           <div className="py-4 overflow-x-auto">
-            <ResearchesTab data={[]} />
+            <ResearchesTab data={researchData} />
           </div>
         </TabsContent>
 

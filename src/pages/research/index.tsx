@@ -114,7 +114,7 @@ export default function Research() {
 	// For now, use fixed params, later can add pagination
 	const { data: response, isLoading } = useGetResearchList({ page: 1, size: 100 });
 
-	const researches: ResearchItem[] = response?.data?.body ?? [];
+	const researches: ResearchItem[] = response?.body ?? [];
 
 	const filteredData = useMemo(() => {
 		if (!researches.length) return [];

@@ -5,6 +5,8 @@ import { TruncatedText } from "@/components/tooltip/truncated-text";
 import { useModalActions } from "@/store/modalStore";
 import { Badge } from "@/ui/badge";
 import { Eye, Pencil, Trash2 } from "lucide-react";
+import { useDeleteResearch } from "@/hooks/research/useDeleteResearch";
+import { toast } from "sonner";
 
 export type Research = {
 	id: number;
@@ -19,6 +21,18 @@ export type Research = {
 
 export function ResearchesTab({ data }: { data: Research[] }) {
 	const { open } = useModalActions();
+	const { mutate: deleteResearch } = useDeleteResearch();
+
+	const handleDelete = (id: number) => {
+		deleteResearch(id, {
+			onSuccess: () => {
+				toast.success("Tadqiqot muvaffaqiyatli o'chirildi");
+			},
+			onError: (error: any) => {
+				toast.error(error?.message || "Tadqiqotni o'chirishda xato");
+			}
+		});
+	};
 
 	const columns: ColumnDef<Research>[] = [
 		{
@@ -109,7 +123,7 @@ export function ResearchesTab({ data }: { data: Research[] }) {
 						<Pencil className="size-3" /> Tahrirlash
 					</button>
 
-					<ConfirmPopover onConfirm={() => console.log("delete", row.original.id)}>
+					<ConfirmPopover onConfirm={() => handleDelete(row.original.id)}>
 						<button
 							type="button"
 							className="inline-flex items-center gap-1.5 bg-red-50 text-red-600 hover:bg-red-100 text-[12px] font-semibold px-2.5 py-1 rounded-md transition-colors cursor-pointer"

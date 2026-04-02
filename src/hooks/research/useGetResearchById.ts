@@ -7,3 +7,12 @@ export const useGetResearchById = (id: number) => {
     queryFn: () => ResearchService.getByResearchId(id)
   });
 };
+
+export const useGetResearchByUserId = (userId: number) => {
+  return useQuery({
+    queryKey: ["researchByUser", userId],
+    queryFn: () => ResearchService.getById(userId),
+    staleTime: 0,
+    refetchOnWindowFocus: true,
+  });
+};

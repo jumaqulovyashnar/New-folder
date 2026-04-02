@@ -7,8 +7,17 @@ export const useCreateResearch = () => {
 
   return useMutation({
     mutationFn: (data: CreateResearchRequest) => ResearchService.create(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["researchList"], exact: false });
+    onSuccess: async () => {
+      // Invalidate and refetch researchList and researchByUser queries
+      await queryClient.invalidateQueries({
+        predicate: (query) => query.queryKey[0] === "researchList" || query.queryKey[0] === "researchByUser"
+      });
+      // Small delay to ensure backend has processed
+      setTimeout(() => {
+        queryClient.refetchQueries({
+          predicate: (query) => query.queryKey[0] === "researchList" || query.queryKey[0] === "researchByUser"
+        });
+      }, 500);
     }
   });
 };
