@@ -21,3 +21,24 @@ export interface GetByIdResponse {
     body: ResearchItem[];
   };
 }
+
+// post uchun
+
+export interface CreateMemberRequest {
+  name: string;
+  description: string;
+  year: number;          
+  fileUrl: string;        
+  userId: number;         
+  member: boolean;      
+  univerName: string;    
+  finished: boolean;     
+  memberEnum: "MILLIY" | "XALQARO"; 
+}
+
+
+export interface CreateMemeberResponse{
+  success:boolean,
+  messsage:string,
+  data:string,
+}

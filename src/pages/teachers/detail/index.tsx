@@ -1,6 +1,6 @@
 import { Button } from "@/ui/button";
 import { useNavigate, useParams } from "react-router";
-import { Teacher } from "../data";
+// import { Teacher } from "../data";
 import { ChevronRight, GraduationCap } from "lucide-react";
 import { StatsGrid } from "./stats-grid";
 import { DEFAULT_DETAIL, TEACHER_DETAILS } from "./type";
@@ -106,7 +106,7 @@ export default function TeacherDetail({ teacher: teacherProp }: TeacherDetailPro
 					O'qituvchilar
 				</button>
 				<ChevronRight className="size-3.5" />
-				<span className="text-foreground font-medium truncate max-w-[160px] sm:max-w-[300px]">
+				<span className="text-foreground font-medium truncate max-w-40 sm:max-w-75">
 					{teacher.fullName}
 				</span>
 			</div>
@@ -131,7 +131,8 @@ export default function TeacherDetail({ teacher: teacherProp }: TeacherDetailPro
 			<ActivityTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
 			<StatsGrid stats={detail.stats} subStats={detail.subStats} />
-
+        
+					 
 			<ResearchModal />
 			<PublicationModal />
 			<NashrModal />
